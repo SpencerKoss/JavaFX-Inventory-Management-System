@@ -83,14 +83,22 @@ public class FXMLDocumentController implements Initializable {
         loader.setLocation(getClass().getResource("ModifyPartView.fxml"));
         loader.load();
         ModifyPartViewController MPVCController = loader.getController();
-        // sending the selected part from the TableView with the Part data 
-        MPVCController.sendPart(partTableView.getSelectionModel().getSelectedItem());
         
+        // sending the selected part from the TableView with the Part data 
+        try{     
+        MPVCController.sendPart(partTableView.getSelectionModel().getSelectedItem());
         
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show(); 
+        
+        } catch(NullPointerException e){     
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error: No Part Selected!");
+            alert.setContentText("Please select a Part in the table!");
+            alert.showAndWait();
+        }
     }
 
     
@@ -113,11 +121,18 @@ public class FXMLDocumentController implements Initializable {
         loader.load();
         ModifyProductController MPVCController = loader.getController();
         // Sending the Product to the Modify Product Screen along with the selected Product Data
+        try{
         MPVCController.sendProduct(productTableView.getSelectionModel().getSelectedItem());
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show(); 
+        } catch(NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error: Product not selected");
+            alert.setContentText("Please select a Product in the Table");
+            alert.showAndWait();
+        }
     }
     
     // Deletes a row in the parts Table
